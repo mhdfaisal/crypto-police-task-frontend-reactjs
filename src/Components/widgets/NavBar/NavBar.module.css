@@ -89,7 +89,12 @@
     flex-direction: column;
   }
 
+  .navBarLinkList{
+    align-self: stretch;
+  }
+
   .navBarLinkListItem{
+    flex-basis: 50%;
     margin:3% 0 2% 0;
   }
 }

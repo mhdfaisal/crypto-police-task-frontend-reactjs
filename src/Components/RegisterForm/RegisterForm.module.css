@@ -1,0 +1,10 @@
+.registerFormLabelContainer{
+display: flex;
+align-items: center;
+font-weight: bold;
+justify-content: flex-end;
+}
+
+.registerFormLabelContainer > div{
+    flex-basis: 30%;
+}

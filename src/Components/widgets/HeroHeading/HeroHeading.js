@@ -1,11 +1,9 @@
 import React from 'react';
 
-const HeroHeading = ()=>{
+const HeroHeading = (props)=>{
 
     return(
-        <div>
-            <h1>Test task of CryptoPolice</h1>
-        </div>
+            <h1 {...props}>Test task of CryptoPolice</h1>
     )
 }
 

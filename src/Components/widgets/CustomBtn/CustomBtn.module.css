@@ -1,0 +1,24 @@
+.customBtn{
+   display: block;
+   width: 100%;
+   background: #0f0f42;
+   border:1px solid #0f0f42;
+   color:#fff;
+   padding:1% 2% 1% 2%;
+   margin-bottom: 5%;
+   transition: all 0.4s;
+   -webkit-transition: all 0.4s;
+   -moz-transition: all 0.4s;
+   -ms-transition: all 0.4s;
+   -o-transition: all 0.4s;
+}
+
+.customBtn:hover{
+    background:#1d1d68;
+    color:#fff;
+    border-radius: 25px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    -o-border-radius: 25px;
+}
