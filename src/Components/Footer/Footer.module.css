@@ -1,0 +1,11 @@
+.footerContainerOuter{
+    background-color:#03033E;
+}
+
+.footerContainerInner{
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 1%;
+    color:#fff;
+    text-align:center;
+}

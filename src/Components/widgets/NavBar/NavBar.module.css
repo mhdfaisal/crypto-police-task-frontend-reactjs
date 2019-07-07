@@ -1,0 +1,101 @@
+/*---- Styling the navbar container Outer ----*/
+
+.navBarContainerOuter {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 0.8% 0 0.8% 0;
+}
+
+/*---- Styling the navbar container Inner ----*/
+.navBarContainerInner {
+  display: flex;
+}
+
+/*---- Styling the navbar logo Container ----*/
+.navBarLogoContainer {
+  flex-basis: 60%;
+  align-self: center;
+}
+
+/*---- Styling the navbar logo image ----*/
+.navBarLogoContainer img {
+  height: 75px;
+  width: auto;
+}
+
+/*---- Styling the navbar link List and navbar link list items ----*/
+
+.navBarLinkList {
+  display: flex;
+  list-style: none;
+  flex-basis: 40%;
+  margin: 0;
+  padding: 0;
+  align-items: flex-end;
+  justify-content: flex-start;
+  align-self: flex-end;
+  padding:1% 0 0.5% 0;
+}
+
+.navBarLinkListItem {
+  flex-basis: 25%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.navBarLinkListItem a:link,
+.navBarLinkListItem a:visited {
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -ms-transition: all 0.4s;
+  -o-transition: all 0.4s;
+}
+
+.navBarLinkListItem a:hover,
+.navBarContainerInner a:active {
+  text-decoration: none;
+
+  color: #8282f2;
+}
+
+.navBarLinkListItem i {
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
+/*---- Media queries ------*/
+@media only screen and (max-width:1104px){
+  .navBarLinkListItem{
+    flex-basis:35%;
+  }
+}
+
+@media only screen and (max-width:850px){
+  .navBarLinkListItem{
+    flex-basis: 33.5%;
+  }
+  .navBarLinkListItem i {
+    font-size: 1.2rem;
+    vertical-align: middle;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .navBarContainerInner {
+    flex-direction: column;
+  }
+
+  .navBarLinkListItem{
+    margin:3% 0 2% 0;
+  }
+}
+
+@media only screen and (max-width:320px){
+  .navBarLinkListItem i{
+    display: none;
+  }
+}
