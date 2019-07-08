@@ -17,7 +17,7 @@ class MainFormContainer extends React.Component {
       { title: "User profile" },
       { title: "Thank you" }
     ],
-    activeStep: 1,
+    activeStep: 3,
     formData: {
       email: {
         value: "",
@@ -84,6 +84,42 @@ class MainFormContainer extends React.Component {
         touched: false,
         name: "agreement",
         labelText: "Agree with terms and conditions"
+      },
+      securityCode: {
+        element: "input",
+        type: "text",
+        value: "",
+        validationRules: {
+          required: true
+        },
+        valid: false,
+        touched: false,
+        name: "code",
+        placeholder: "Enter security code"
+      },
+      name: {
+        element: "input",
+        type: "text",
+        value: "",
+        valid: false,
+        validationRules: {
+          required: true
+        },
+        touched: false,
+        placeholder: "Enter your name",
+        name: "name"
+      },
+      website: {
+        element: "input",
+        type: "text",
+        value: "",
+        valid: false,
+        validationRules: {
+          required: true
+        },
+        touched: false,
+        placeholder: "https://www.yourdomain.com",
+        name: "website"
       }
     }
   };
@@ -180,9 +216,20 @@ class MainFormContainer extends React.Component {
           />
         );
       case 2:
-        return <SecurityCodeForm />;
+        return (
+          <SecurityCodeForm
+            securityCode={formData.securityCode}
+            handleChange={this.handleChange}
+          />
+        );
       case 3:
-        return <UserProfileForm />;
+        return (
+          <UserProfileForm
+            name={formData.name}
+            website={formData.website}
+            handleChange={this.handleChange}
+          />
+        );
       case 4:
         return <ThankYouPage />;
       default:

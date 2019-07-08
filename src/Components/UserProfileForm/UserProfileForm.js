@@ -1,9 +1,13 @@
 import React from 'react';
+import FormField from '../widgets/FormField/FormField';
 
-const UserProfileForm = ()=>{
+const UserProfileForm = ({name, handleChange, website})=>{
 
     return(
-        <div>UserProfileForm</div>
+        <>
+            <FormField {...name} handleChange={handleChange} id="name" />
+            <FormField {...website} handleChange={handleChange} id="website" />
+        </>
     )
 }
 

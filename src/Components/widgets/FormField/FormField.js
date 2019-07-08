@@ -17,7 +17,8 @@ const renderFormField = ({
   options,
   handleShowPasswordClick,
   showPassword,
-  labelText
+  labelText,
+  styles
 }) => {
   switch (element) {
     case "input":
@@ -57,6 +58,7 @@ const renderFormField = ({
             className={
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
+            style={{...styles}}
           />
           {renderInvalidFeedback("Please enter a valid " + name)}
         </>
