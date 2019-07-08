@@ -7,7 +7,6 @@ const renderFormField = ({
   valid,
   value,
   placeholder,
-  validationRules,
   touched,
   type,
   element,
@@ -74,7 +73,7 @@ const renderFormField = ({
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
           >
-            {renderSelectOptions(options)}
+            {renderSelectOptions(options, placeholder)}
           </select>
           {renderInvalidFeedback("Please select a valid " + name)}
         </>
@@ -131,7 +130,7 @@ const renderInvalidFeedback = msg => {
   return null;
 };
 
-const renderSelectOptions = options => {
+const renderSelectOptions = (options, placeholder) => {
   let optionsToRender = options.map(option => (
     <option value={option.value} key={uuid()}>
       {option.name}
@@ -139,7 +138,7 @@ const renderSelectOptions = options => {
   ));
   optionsToRender = [
     <option value="" key={uuid()}>
-      Select your option
+      {placeholder}
     </option>,
     ...optionsToRender
   ];

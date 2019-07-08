@@ -8,6 +8,7 @@ import SecurityCodeForm from "../SecurityCodeForm/SecurityCodeForm";
 import ThankYouPage from "../ThankYouPage/ThankYouPage";
 import UserProfileForm from "../UserProfileForm/UserProfileForm";
 import validate from "../../utility/validate";
+import countrieslist from "../../utility/countrieslist.json";
 
 class MainFormContainer extends React.Component {
   state = {
@@ -57,7 +58,8 @@ class MainFormContainer extends React.Component {
         },
         valid: false,
         name: "category",
-        touched: false
+        touched: false,
+        placeholder:"Select your category"
       },
       password: {
         element: "input",
@@ -120,6 +122,21 @@ class MainFormContainer extends React.Component {
         touched: false,
         placeholder: "https://www.yourdomain.com",
         name: "website"
+      },
+      country:{
+        element:"select",
+        name:"country",
+        value:"",
+        options:[...countrieslist],
+        placeholder:"Select your country",
+        valid:false,
+        validationRules:{
+          required:true
+        },
+        touched:false
+      },
+      avatar:{
+        
       }
     }
   };
@@ -228,6 +245,7 @@ class MainFormContainer extends React.Component {
             name={formData.name}
             website={formData.website}
             handleChange={this.handleChange}
+            country={formData.country}
           />
         );
       case 4:
