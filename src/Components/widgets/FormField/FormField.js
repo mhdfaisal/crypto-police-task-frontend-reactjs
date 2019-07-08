@@ -57,7 +57,7 @@ const renderFormField = ({
             className={
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
-            style={{...styles}}
+            style={{ ...styles }}
           />
           {renderInvalidFeedback("Please enter a valid " + name)}
         </>

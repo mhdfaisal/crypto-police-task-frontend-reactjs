@@ -18,7 +18,7 @@ class MainFormContainer extends React.Component {
       { title: "User profile" },
       { title: "Thank you" }
     ],
-    activeStep: 3,
+    activeStep: 4,
     formData: {
       email: {
         value: "",
@@ -59,7 +59,7 @@ class MainFormContainer extends React.Component {
         valid: false,
         name: "category",
         touched: false,
-        placeholder:"Select your category"
+        placeholder: "Select your category"
       },
       password: {
         element: "input",
@@ -123,20 +123,20 @@ class MainFormContainer extends React.Component {
         placeholder: "https://www.yourdomain.com",
         name: "website"
       },
-      country:{
-        element:"select",
-        name:"country",
-        value:"",
-        options:[...countrieslist],
-        placeholder:"Select your country",
-        valid:false,
-        validationRules:{
-          required:true
+      country: {
+        element: "select",
+        name: "country",
+        value: "",
+        options: [...countrieslist],
+        placeholder: "Select your country",
+        valid: false,
+        validationRules: {
+          required: true
         },
-        touched:false
+        touched: false
       },
-      avatar:{
-        
+      avatar: {
+        value: ""
       }
     }
   };
@@ -249,7 +249,26 @@ class MainFormContainer extends React.Component {
           />
         );
       case 4:
-        return <ThankYouPage />;
+        const {
+          name,
+          category,
+          email,
+          country,
+          intlPhoneInput,
+          website,
+          avatar
+        } = formData;
+        return (
+          <ThankYouPage
+            avatar={avatar.value}
+            name={name.value}
+            category={category.value}
+            email={email.value}
+            country={country.value}
+            intlPhoneInput={intlPhoneInput.value}
+            website={website.value}
+          />
+        );
       default:
         return null;
     }
