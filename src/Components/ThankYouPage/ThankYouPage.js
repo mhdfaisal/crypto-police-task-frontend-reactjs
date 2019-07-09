@@ -12,7 +12,7 @@ class ThankYouPage extends React.Component {
   state = {
     userComments: [],
     userCommentsSliced: [],
-    showAll:false
+    showAll: false
   };
 
   componentDidMount() {
@@ -50,7 +50,7 @@ class ThankYouPage extends React.Component {
 
   renderUserComments = () => {
     const { userCommentsSliced, userComments, showAll } = this.state;
-    const commentsToRender = !showAll ? userCommentsSliced : userComments
+    const commentsToRender = !showAll ? userCommentsSliced : userComments;
     return commentsToRender.length > 0
       ? commentsToRender.map(commentData => {
           return (
@@ -98,13 +98,17 @@ class ThankYouPage extends React.Component {
   render() {
     return (
       <div className="container my-5">
-        <h3 className="text-center mb-4">
-          Thank you! Your profile is created!
-        </h3>
+        <div className="row">
+          <div className="col-md-12">
+            <h3 className="text-center mb-4">
+              Thank you! Your profile is created!
+            </h3>
+          </div>
+        </div>
         {this.renderProfileCard(this.props)}
         <div className="row mt-5">
-          <div className="col-md-12 text-center">
-            <h4>Your website {this.props.website} analyses</h4>
+          <div className="col-md-12">
+            <div className={styles.breakHeading}><h4>Your website {this.props.website} analyses</h4></div>
           </div>
         </div>
         <div className="text-center mt-3">
@@ -122,12 +126,16 @@ class ThankYouPage extends React.Component {
           <div className="row my-2 text-center">
             <div className="col-md-12">
               <div>
-                <a href="/" alt="show more" onClick={(e)=>{
-                  e.preventDefault();
-                  this.setState((prevState)=>{
-                    return {...prevState, showAll:!prevState.showAll}
-                  })
-                }}>
+                <a
+                  href="/"
+                  alt="show more"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.setState(prevState => {
+                      return { ...prevState, showAll: !prevState.showAll };
+                    });
+                  }}
+                >
                   {this.state.showAll ? "Show less" : "Show more"}
                 </a>
               </div>

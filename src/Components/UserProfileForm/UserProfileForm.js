@@ -13,24 +13,24 @@ const renderLabel = lableText => {
   );
 };
 
-const renderFooterButtons = () => {
+const renderFooterButtons = (goToPrevStep, handleSaveBtnClick) => {
   return (
     <>
       <div className="row mt-5">
         <div className="col-md-8 offset-md-2">
-          <CustomBtn title="Save and go further >>" />
+          <CustomBtn title="Save and go further >>" handleClick={()=>{handleSaveBtnClick("userprofile")}}/>
         </div>
       </div>
       <div className="row">
         <div className="col-md-12 text-center">
-          <BackBtn title="Or go back!" />
+          <BackBtn title="Or go back!" handleClick={goToPrevStep}  />
         </div>
       </div>
     </>
   );
 };
 
-const UserProfileForm = ({ name, handleChange, website, country }) => {
+const UserProfileForm = ({ name, handleChange, website, country, goToPrevStep, handleSaveBtnClick }) => {
   return (
     <div className="container my-5">
       <h3 className="text-center mb-4">Complete your user profile</h3>
@@ -60,7 +60,7 @@ const UserProfileForm = ({ name, handleChange, website, country }) => {
       </div>
       <div className="row form-group">
         {renderLabel("")}
-        <div className="col-md-8">{renderFooterButtons()}</div>
+        <div className="col-md-8">{renderFooterButtons(goToPrevStep, handleSaveBtnClick)}</div>
       </div>
     </div>
   );

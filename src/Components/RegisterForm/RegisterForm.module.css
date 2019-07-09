@@ -8,3 +8,10 @@ justify-content: flex-end;
 .registerFormLabelContainer > div{
     flex-basis: 30%;
 }
+
+@media only screen and (max-width:768px){
+    .registerFormLabelContainer{
+        justify-content: flex-start;
+        margin-bottom:2%;
+    }
+}

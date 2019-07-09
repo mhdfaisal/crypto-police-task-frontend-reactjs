@@ -26,7 +26,7 @@ const UserProfileCard = ({
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div>
-          <p>{category}</p>
+          <p className="text-capitalize">{category} developer</p>
           <p>From {country}</p>
           <div>{website}</div>
         </div>

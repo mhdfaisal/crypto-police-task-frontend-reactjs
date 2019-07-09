@@ -13,12 +13,12 @@ const renderHeader = ()=>{
     )
 }
 
-const renderFooterButtons = (goToPrevStep)=>{
+const renderFooterButtons = (goToPrevStep,handleSaveBtnClick)=>{
     return(
         <>
         <div className="row mt-5">
           <div className="col-md-8 offset-md-2">
-            <CustomBtn title="Save and go further >>"/>
+            <CustomBtn title="Save and go further >>" handleClick={()=>{handleSaveBtnClick("securitycode")}}/>
           </div>
         </div>
         <div className="row">
@@ -30,7 +30,7 @@ const renderFooterButtons = (goToPrevStep)=>{
     )
 }
 
-const SecurityCodeForm = ({ securityCode, handleChange, goToPrevStep }) => {
+const SecurityCodeForm = ({ securityCode, handleChange, goToPrevStep, handleSaveBtnClick }) => {
   return (
     <div className="container my-5">
       {renderHeader()}
@@ -44,7 +44,7 @@ const SecurityCodeForm = ({ securityCode, handleChange, goToPrevStep }) => {
           />
         </div>
       </div>
-      {renderFooterButtons(goToPrevStep)}
+      {renderFooterButtons(goToPrevStep, handleSaveBtnClick)}
     </div>
   );
 };

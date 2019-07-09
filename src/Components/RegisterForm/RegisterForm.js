@@ -23,7 +23,11 @@ const RegisterForm = ({
 }) => {
   return (
     <div className="container my-5">
-      <h3 className="text-center mb-4">Register</h3>
+      <div className="row">
+        <div className="col-md-12">
+          <h3 className="text-center mb-4">Register</h3>
+        </div>
+      </div>
       <div className="row form-group">
         {renderLabel("Email")}
         <div className="col-md-8">

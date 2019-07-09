@@ -36,3 +36,28 @@
   max-width: 100%;
   max-height: 100%;
 }
+
+@media only screen and (max-width:767px){
+  .profileContainer{
+    max-width: 100%;
+  }
+}
+
+@media only screen and (max-width:530px){
+  .profileContainer{
+    flex-direction: column;
+  }
+  .profileContainer > div {
+    flex-basis: 100%;
+    align-self: flex-start;
+  }
+  .profileAvatarContainer div:nth-child(2) {
+    margin-bottom: 5%;
+  }
+  .profileAvatarContainer {
+    flex-direction: column;
+  }
+  .profileCardAvatar{
+    margin-bottom:6%;
+  }
+}

@@ -40,7 +40,7 @@ class MainFormContainer extends React.Component {
           required: true,
           isPhoneNumber: true
         },
-        inputPhoneVal:"",
+        inputPhoneVal: "",
         valid: false,
         placeholder: "",
         touched: false,
@@ -138,29 +138,35 @@ class MainFormContainer extends React.Component {
         touched: false
       },
       avatar: {
-        value: ""
+        value: "",
+        valid:true
       }
     }
   };
 
-  setErrors = (submittedData)=>{
+  setErrors = submittedData => {
     let valid = true;
-    let stateUpdateObject ={...this.state.formData};
+    let stateUpdateObject = { ...this.state.formData };
     let formStateChanged = false;
-    for(let data in submittedData){
-      valid = valid && submittedData[data].valid
-      if(!submittedData[data].valid){
+    for (let data in submittedData) {
+      valid = valid && submittedData[data].valid;
+      if (!submittedData[data].valid) {
         formStateChanged = true;
-        stateUpdateObject={...stateUpdateObject, [data]:{
-          ...this.state.formData[data], valid:false, touched:true
-        }}
+        stateUpdateObject = {
+          ...stateUpdateObject,
+          [data]: {
+            ...this.state.formData[data],
+            valid: false,
+            touched: true
+          }
+        };
       }
     }
-    if(formStateChanged){
-      this.setState({formData:{...stateUpdateObject}})
+    if (formStateChanged) {
+      this.setState({ formData: { ...stateUpdateObject } });
     }
     return valid;
-  }
+  };
 
   validFormSubmission = formType => {
     const { formData } = this.state;
@@ -173,36 +179,60 @@ class MainFormContainer extends React.Component {
           category: formData.category,
           password: formData.password
         };
-        return this.setErrors(submittedData)  
+        return this.setErrors(submittedData);
 
-        default: return null;
+      case "securitycode":
+        submittedData = { securityCode: formData.securityCode };
+        return this.setErrors(submittedData);
+      
+      case "userprofile": 
+      console.log("yes")
+      submittedData = {
+        name: formData.name,
+        website: formData.website,
+        country: formData.country,
+        avatar:formData.avatar
+      }
+      return this.setErrors(submittedData);
+      default:
+        return null;
     }
   };
 
-  goToNextStep = ()=>{
-    this.setState(prevState =>{
-      return{
-        ...prevState,
-        activeStep:prevState.activeStep + 1
-      }
-    })
-  }
+  goToNextStep = () => {
+    const { activeStep } = this.state;
+    activeStep === 1
+      ? this.setState(prevState => {
+          return {
+            ...prevState,
+            activeStep: prevState.activeStep + 1,
+            formData: {
+              ...prevState.formData,
+              agreement: { ...prevState.formData.agreement, isChecked: false }
+            }
+          };
+        })
+      : this.setState(prevState => {
+          return {
+            ...prevState,
+            activeStep: prevState.activeStep + 1
+          };
+        });
+  };
 
-  goToPrevStep = ()=>{
-    this.setState(prevState =>{
-      return{
+  goToPrevStep = () => {
+    this.setState(prevState => {
+      return {
         ...prevState,
-        activeStep:prevState.activeStep - 1,
-        formData:{...prevState.formData, agreement:{...prevState.formData.agreement, isChecked:false}}
-      }
-    })
-  }
+        activeStep: prevState.activeStep - 1
+      };
+    });
+  };
 
   handleFooterBtnClick = formType => {
     if (this.validFormSubmission(formType)) {
-      alert("all are valid");
       //make a network request and then on successful completion move to next step
-      this.goToNextStep()
+      this.goToNextStep();
     }
   };
 
@@ -213,7 +243,7 @@ class MainFormContainer extends React.Component {
         [id]: {
           ...this.state.formData[id],
           value: phoneNumber ? phoneNumber : e.target.value,
-          inputPhoneVal : phoneNumber ? e.target.value:undefined,
+          inputPhoneVal: phoneNumber ? e.target.value : undefined,
           touched: true,
           valid: validate(
             e.target.value,
@@ -230,12 +260,11 @@ class MainFormContainer extends React.Component {
       let phoneNumber = `+${countryData.dialCode}-${value}`;
       //faking the event object to use the same function
       this.updateStateAfterChange(
-        { target: { value: value }},
+        { target: { value: value } },
         id,
         phoneNumber
       );
-    }
-    else if(id === "agreement") {
+    } else if (id === "agreement") {
       this.setState(prevState => {
         const isChecked = prevState.formData.agreement.isChecked;
         return {
@@ -254,8 +283,7 @@ class MainFormContainer extends React.Component {
           }
         };
       });
-    } 
-    else {
+    } else {
       this.updateStateAfterChange(e, id);
     }
   };
@@ -305,7 +333,8 @@ class MainFormContainer extends React.Component {
           <SecurityCodeForm
             securityCode={formData.securityCode}
             handleChange={this.handleChange}
-            goToPrevStep = {this.goToPrevStep}
+            goToPrevStep={this.goToPrevStep}
+            handleSaveBtnClick={this.handleFooterBtnClick}
           />
         );
       case 3:
@@ -315,7 +344,8 @@ class MainFormContainer extends React.Component {
             website={formData.website}
             handleChange={this.handleChange}
             country={formData.country}
-            goToPrevStep = {this.goToPrevStep}
+            goToPrevStep={this.goToPrevStep}
+            handleSaveBtnClick={this.handleFooterBtnClick}
           />
         );
       case 4:

@@ -74,7 +74,7 @@ const renderFormField = ({
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
           >
-            {renderSelectOptions(options, placeholder)}
+            {renderSelectOptions(options, placeholder,id)}
           </select>
           {renderInvalidFeedback("Please select a valid " + name)}
         </>
@@ -141,9 +141,9 @@ const renderInvalidFeedback = msg => {
   return null;
 };
 
-const renderSelectOptions = (options, placeholder) => {
+const renderSelectOptions = (options, placeholder, id) => {
   let optionsToRender = options.map(option => (
-    <option value={option.value} key={uuid()}>
+    <option value={id==="country" ? option.name : option.value} key={uuid()}>
       {option.name}
     </option>
   ));
