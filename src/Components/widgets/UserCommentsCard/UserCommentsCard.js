@@ -1,24 +1,24 @@
 import React from "react";
 import styles from "./UserCommentsCard.module.css";
 
-const UserCommentsCard = () => {
+const UserCommentsCard = ({commentData}) => {
   return (
     <div className={styles.commentsCardContainer}>
       <div>
         <div className={styles.commentsAvatarContainer}>
           <img
-            src="http://www.mohdfaisal.com/assets/images/faisal-profile-photo.png"
+            src={commentData.avatar}
             alt="avatar"
           />
         </div>
       </div>
       <div>
         <div className={styles.commentsHeader}>
-            <p>X-Pilot</p>
-            <p>May 25,2018</p>
+            <p>{commentData.name}</p>
+            <p>{commentData.date}</p>
         </div>
         <div className={styles.commentsBody}>
-            <p>One of the best resources about phishing and how to fight with it.</p>
+            <p>{commentData.text}</p>
         </div>
       </div>
     </div>

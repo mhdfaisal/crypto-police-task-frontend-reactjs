@@ -9,6 +9,7 @@ import ThankYouPage from "../ThankYouPage/ThankYouPage";
 import UserProfileForm from "../UserProfileForm/UserProfileForm";
 import validate from "../../utility/validate";
 import countrieslist from "../../utility/countrieslist.json";
+import { stat } from "fs";
 
 class MainFormContainer extends React.Component {
   state = {
@@ -18,7 +19,7 @@ class MainFormContainer extends React.Component {
       { title: "User profile" },
       { title: "Thank you" }
     ],
-    activeStep: 4,
+    activeStep: 1,
     formData: {
       email: {
         value: "",
@@ -39,6 +40,7 @@ class MainFormContainer extends React.Component {
           required: true,
           isPhoneNumber: true
         },
+        inputPhoneVal:"",
         valid: false,
         placeholder: "",
         touched: false,
@@ -141,6 +143,69 @@ class MainFormContainer extends React.Component {
     }
   };
 
+  setErrors = (submittedData)=>{
+    let valid = true;
+    let stateUpdateObject ={...this.state.formData};
+    let formStateChanged = false;
+    for(let data in submittedData){
+      valid = valid && submittedData[data].valid
+      if(!submittedData[data].valid){
+        formStateChanged = true;
+        stateUpdateObject={...stateUpdateObject, [data]:{
+          ...this.state.formData[data], valid:false, touched:true
+        }}
+      }
+    }
+    if(formStateChanged){
+      this.setState({formData:{...stateUpdateObject}})
+    }
+    return valid;
+  }
+
+  validFormSubmission = formType => {
+    const { formData } = this.state;
+    let submittedData = {};
+    switch (formType) {
+      case "register":
+        submittedData = {
+          email: formData.email,
+          intlPhoneInput: formData.intlPhoneInput,
+          category: formData.category,
+          password: formData.password
+        };
+        return this.setErrors(submittedData)  
+
+        default: return null;
+    }
+  };
+
+  goToNextStep = ()=>{
+    this.setState(prevState =>{
+      return{
+        ...prevState,
+        activeStep:prevState.activeStep + 1
+      }
+    })
+  }
+
+  goToPrevStep = ()=>{
+    this.setState(prevState =>{
+      return{
+        ...prevState,
+        activeStep:prevState.activeStep - 1,
+        formData:{...prevState.formData, agreement:{...prevState.formData.agreement, isChecked:false}}
+      }
+    })
+  }
+
+  handleFooterBtnClick = formType => {
+    if (this.validFormSubmission(formType)) {
+      alert("all are valid");
+      //make a network request and then on successful completion move to next step
+      this.goToNextStep()
+    }
+  };
+
   updateStateAfterChange = (e, id, phoneNumber = null) => {
     this.setState({
       formData: {
@@ -148,6 +213,7 @@ class MainFormContainer extends React.Component {
         [id]: {
           ...this.state.formData[id],
           value: phoneNumber ? phoneNumber : e.target.value,
+          inputPhoneVal : phoneNumber ? e.target.value:undefined,
           touched: true,
           valid: validate(
             e.target.value,
@@ -164,12 +230,12 @@ class MainFormContainer extends React.Component {
       let phoneNumber = `+${countryData.dialCode}-${value}`;
       //faking the event object to use the same function
       this.updateStateAfterChange(
-        { target: { value: value } },
+        { target: { value: value }},
         id,
         phoneNumber
       );
     }
-    if (id === "agreement") {
+    else if(id === "agreement") {
       this.setState(prevState => {
         const isChecked = prevState.formData.agreement.isChecked;
         return {
@@ -188,7 +254,8 @@ class MainFormContainer extends React.Component {
           }
         };
       });
-    } else {
+    } 
+    else {
       this.updateStateAfterChange(e, id);
     }
   };
@@ -230,6 +297,7 @@ class MainFormContainer extends React.Component {
             agreement={formData.agreement}
             handleChange={this.handleChange}
             handleShowPasswordClick={this.handleShowPasswordClick}
+            handleRegisterClick={this.handleFooterBtnClick}
           />
         );
       case 2:
@@ -237,6 +305,7 @@ class MainFormContainer extends React.Component {
           <SecurityCodeForm
             securityCode={formData.securityCode}
             handleChange={this.handleChange}
+            goToPrevStep = {this.goToPrevStep}
           />
         );
       case 3:
@@ -246,6 +315,7 @@ class MainFormContainer extends React.Component {
             website={formData.website}
             handleChange={this.handleChange}
             country={formData.country}
+            goToPrevStep = {this.goToPrevStep}
           />
         );
       case 4:

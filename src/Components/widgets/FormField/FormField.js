@@ -17,7 +17,8 @@ const renderFormField = ({
   handleShowPasswordClick,
   showPassword,
   labelText,
-  styles
+  styles,
+  inputPhoneVal
 }) => {
   switch (element) {
     case "input":
@@ -84,11 +85,21 @@ const renderFormField = ({
         <>
           <IntlTelInput
             containerClassName="intl-tel-input"
+            value={inputPhoneVal}
             inputClassName={
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
+            autoPlaceholder={true}
+            defaultCountry="ch"
             onPhoneNumberChange={(isValid, value, countryData) => {
-              handleChange({}, (id = "intlPhoneInput"), {
+              handleChange({},"intlPhoneInput", {
+                value: value,
+                countryData: countryData
+              });
+            }}
+            onSelectFlag = {(value,countryData) => {
+              console.log()
+              handleChange({},"intlPhoneInput", {
                 value: value,
                 countryData: countryData
               });

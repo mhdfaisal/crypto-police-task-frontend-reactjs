@@ -13,7 +13,7 @@ const renderHeader = ()=>{
     )
 }
 
-const renderFooterButtons = ()=>{
+const renderFooterButtons = (goToPrevStep)=>{
     return(
         <>
         <div className="row mt-5">
@@ -23,14 +23,14 @@ const renderFooterButtons = ()=>{
         </div>
         <div className="row">
             <div className="col-md-12 text-center">
-                <BackBtn title="Or go back!" />
+                <BackBtn title="Or go back!" handleClick={goToPrevStep}/>
             </div>
         </div>
         </>
     )
 }
 
-const SecurityCodeForm = ({ securityCode, handleChange }) => {
+const SecurityCodeForm = ({ securityCode, handleChange, goToPrevStep }) => {
   return (
     <div className="container my-5">
       {renderHeader()}
@@ -44,7 +44,7 @@ const SecurityCodeForm = ({ securityCode, handleChange }) => {
           />
         </div>
       </div>
-      {renderFooterButtons()}
+      {renderFooterButtons(goToPrevStep)}
     </div>
   );
 };

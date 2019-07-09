@@ -4,11 +4,11 @@ import styles from "./CustomBtn.module.css";
 const CustomBtn = props => {
   return (
     <button
-      className={styles.customBtn}
+      className={props.disabled ? styles.customBtnDisabled: styles.customBtn}
       style={props.style}
       onClick={e => {
         e.preventDefault();
-        props.handleClick();
+        !props.disabled ? props.handleClick() : e.preventDefault()
       }}
     >
       {props.title}
