@@ -19,16 +19,16 @@ const UserProfileCard = ({
           />
         </div>
         <div>
-          <p>Martin</p>
-          <p>martin@gmail.com</p>
-          <div>+371 28452331</div>
+          <p>{name}</p>
+          <p>{email}</p>
+          <div>{intlPhoneInput}</div>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div>
-          <p>Front end developer</p>
-          <p>From Austria</p>
-          <div>www.martin.com</div>
+          <p>{category}</p>
+          <p>From {country}</p>
+          <div>{website}</div>
         </div>
       </div>
     </div>
