@@ -33,3 +33,60 @@
 .commentsHeader > p{
     flex-basis: 50%;
 }
+
+@media only screen and (max-width:1245px){
+    .commentsCardContainer{
+        max-width: 75%;
+        margin:0 auto;
+    }
+}
+
+@media only screen and (max-width:940px){
+    .commentsCardContainer div:nth-child(1){
+        flex-basis: 18%;
+        word-break: break-word;
+    }
+    
+    .commentsCardContainer div:nth-child(2){
+        flex-basis: 82%;
+        word-break: break-word;
+    }
+}
+
+@media only screen and (max-width:768px){
+    .commentsCardContainer{
+        max-width: 95%;
+        margin:0 auto;
+    }
+}
+
+@media only screen and (max-width:640px){
+    .commentsCardContainer{
+        max-width: 100%;
+        margin:0 auto;
+    }
+}
+
+@media only screen and (max-width:579px){
+    .commentsCardContainer div:nth-child(1){
+        flex-basis: 25%;
+        word-break: break-word;
+    }
+    
+    .commentsCardContainer div:nth-child(2){
+        flex-basis: 75%;
+        word-break: break-word;
+    }
+}
+
+@media only screen and (max-width:425px){
+    .commentsCardContainer{
+        flex-direction: column;
+    }
+    .commentsHeader{
+        flex-direction: column;
+    }
+    .commentsHeader >p{
+        margin-top:2%;
+    }
+}

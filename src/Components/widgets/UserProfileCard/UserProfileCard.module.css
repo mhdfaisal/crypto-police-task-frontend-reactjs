@@ -37,13 +37,19 @@
   max-height: 100%;
 }
 
+@media only screen and (max-width:991px){
+  .profileContainer{
+    max-width: 100%;
+  }
+}
+
 @media only screen and (max-width:767px){
   .profileContainer{
     max-width: 100%;
   }
 }
 
-@media only screen and (max-width:530px){
+@media only screen and (max-width:620px){
   .profileContainer{
     flex-direction: column;
   }
