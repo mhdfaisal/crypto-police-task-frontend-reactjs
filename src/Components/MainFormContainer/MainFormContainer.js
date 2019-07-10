@@ -9,7 +9,7 @@ import ThankYouPage from "../ThankYouPage/ThankYouPage";
 import UserProfileForm from "../UserProfileForm/UserProfileForm";
 import validate from "../../utility/validate";
 import countrieslist from "../../utility/countrieslist.json";
-import { stat } from "fs";
+import localforage from "localforage";
 
 class MainFormContainer extends React.Component {
   state = {
@@ -139,9 +139,48 @@ class MainFormContainer extends React.Component {
       },
       avatar: {
         value: "",
-        valid:true
+        valid: true
       }
     }
+  };
+
+  componentDidMount() {
+    this.rehydrateState();
+  }
+
+  rehydrateState = () => {
+    const { formData } = this.state;
+    let newFormData = { ...formData };
+    let { activeStep } = this.state;
+    localforage
+      .iterate((value, key) => {
+        if (key === "activeStep") {
+          activeStep = value;
+        } else if (key === "intlPhoneInput") {
+          newFormData = {
+            ...newFormData,
+            [key]: {
+              ...newFormData[key],
+              inputPhoneVal: value,
+              touched: true,
+              valid: validate(value, newFormData[key].validationRules)
+            }
+          };
+        } else {
+          newFormData = {
+            ...newFormData,
+            [key]: {
+              ...newFormData[key],
+              value: value,
+              touched: true,
+              valid: validate(value, newFormData[key].validationRules)
+            }
+          };
+        }
+      })
+      .then(() => {
+        this.setState({ activeStep: activeStep, formData: { ...newFormData } });
+      });
   };
 
   setErrors = submittedData => {
@@ -184,16 +223,15 @@ class MainFormContainer extends React.Component {
       case "securitycode":
         submittedData = { securityCode: formData.securityCode };
         return this.setErrors(submittedData);
-      
-      case "userprofile": 
-      console.log("yes")
-      submittedData = {
-        name: formData.name,
-        website: formData.website,
-        country: formData.country,
-        avatar:formData.avatar
-      }
-      return this.setErrors(submittedData);
+
+      case "userprofile":
+        submittedData = {
+          name: formData.name,
+          website: formData.website,
+          country: formData.country,
+          avatar: formData.avatar
+        };
+        return this.setErrors(submittedData);
       default:
         return null;
     }
@@ -202,31 +240,50 @@ class MainFormContainer extends React.Component {
   goToNextStep = () => {
     const { activeStep } = this.state;
     activeStep === 1
-      ? this.setState(prevState => {
-          return {
-            ...prevState,
-            activeStep: prevState.activeStep + 1,
-            formData: {
-              ...prevState.formData,
-              agreement: { ...prevState.formData.agreement, isChecked: false }
-            }
-          };
-        })
-      : this.setState(prevState => {
-          return {
-            ...prevState,
-            activeStep: prevState.activeStep + 1
-          };
-        });
+      ? this.setState(
+          prevState => {
+            return {
+              ...prevState,
+              activeStep: prevState.activeStep + 1,
+              formData: {
+                ...prevState.formData,
+                agreement: { ...prevState.formData.agreement, isChecked: false }
+              }
+            };
+          },
+          () => {
+            this.setActiveStepInStorage(this.state.activeStep);
+          }
+        )
+      : this.setState(
+          prevState => {
+            return {
+              ...prevState,
+              activeStep: prevState.activeStep + 1
+            };
+          },
+          () => {
+            this.setActiveStepInStorage(this.state.activeStep);
+          }
+        );
   };
 
   goToPrevStep = () => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        activeStep: prevState.activeStep - 1
-      };
-    });
+    this.setState(
+      prevState => {
+        return {
+          ...prevState,
+          activeStep: prevState.activeStep - 1
+        };
+      },
+      () => {
+        this.setActiveStepInStorage(this.state.activeStep);
+      }
+    );
+  };
+
+  setActiveStepInStorage = activeStep => {
+    localforage.setItem("activeStep", activeStep);
   };
 
   handleFooterBtnClick = formType => {
@@ -237,21 +294,28 @@ class MainFormContainer extends React.Component {
   };
 
   updateStateAfterChange = (e, id, phoneNumber = null) => {
-    this.setState({
-      formData: {
-        ...this.state.formData,
-        [id]: {
-          ...this.state.formData[id],
-          value: phoneNumber ? phoneNumber : e.target.value,
-          inputPhoneVal: phoneNumber ? e.target.value : undefined,
-          touched: true,
-          valid: validate(
-            e.target.value,
-            this.state.formData[id].validationRules
-          )
+    let valueForLocalForage = e.target.value;
+    this.setState(
+      {
+        formData: {
+          ...this.state.formData,
+          [id]: {
+            ...this.state.formData[id],
+            value: phoneNumber ? phoneNumber : e.target.value,
+            inputPhoneVal: phoneNumber ? e.target.value : undefined,
+            touched: true,
+            valid: validate(
+              e.target.value,
+              this.state.formData[id].validationRules
+            )
+          }
         }
+      },
+      () => {
+        localforage.setItem(id, valueForLocalForage)
+        .catch(err => console.log(err));
       }
-    });
+    );
   };
 
   handleChange = (e, id, phoneObj = {}) => {

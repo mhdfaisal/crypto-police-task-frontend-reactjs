@@ -34,14 +34,7 @@
     flex-basis: 50%;
 }
 
-@media only screen and (max-width:1245px){
-    .commentsCardContainer{
-        max-width: 75%;
-        margin:0 auto;
-    }
-}
-
-@media only screen and (max-width:940px){
+@media only screen and (max-width:1229px){
     .commentsCardContainer div:nth-child(1){
         flex-basis: 18%;
         word-break: break-word;
@@ -52,6 +45,25 @@
         word-break: break-word;
     }
 }
+
+@media only screen and (max-width:1024px){
+
+    .commentsCardContainer{
+        max-width: 76%;
+    }
+
+    .commentsCardContainer div:nth-child(1){
+        flex-basis: 20%;
+        word-break: break-word;
+    }
+    
+    .commentsCardContainer div:nth-child(2){
+        flex-basis: 80%;
+        word-break: break-word;
+    }
+}
+
+
 
 @media only screen and (max-width:768px){
     .commentsCardContainer{
