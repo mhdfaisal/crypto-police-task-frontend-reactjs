@@ -146,6 +146,7 @@ class MainFormContainer extends React.Component {
 
   componentDidMount() {
     this.rehydrateState();
+    // localforage.clear();
   }
 
   rehydrateState = () => {
@@ -161,9 +162,10 @@ class MainFormContainer extends React.Component {
             ...newFormData,
             [key]: {
               ...newFormData[key],
-              inputPhoneVal: value,
+              inputPhoneVal: value[1],
+              value:value[0],
               touched: true,
-              valid: validate(value, newFormData[key].validationRules)
+              valid: validate(value[1], newFormData[key].validationRules)
             }
           };
         } else {
@@ -295,6 +297,7 @@ class MainFormContainer extends React.Component {
 
   updateStateAfterChange = (e, id, phoneNumber = null) => {
     let valueForLocalForage = e.target.value;
+    let phoneNumberForLocalForage = phoneNumber;
     this.setState(
       {
         formData: {
@@ -312,8 +315,13 @@ class MainFormContainer extends React.Component {
         }
       },
       () => {
-        localforage.setItem(id, valueForLocalForage)
-        .catch(err => console.log(err));
+        if (id === "intlPhoneInput") {
+          localforage.setItem(id, [phoneNumberForLocalForage,valueForLocalForage])
+        } else {
+          localforage
+            .setItem(id, valueForLocalForage)
+            .catch(err => console.log(err));
+        }
       }
     );
   };

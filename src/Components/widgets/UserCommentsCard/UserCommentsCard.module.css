@@ -34,6 +34,12 @@
     flex-basis: 50%;
 }
 
+@media only screen and (max-width:1290px){
+    .commentsCardContainer{
+        max-width: 66%;
+    }
+}
+
 @media only screen and (max-width:1229px){
     .commentsCardContainer div:nth-child(1){
         flex-basis: 18%;
