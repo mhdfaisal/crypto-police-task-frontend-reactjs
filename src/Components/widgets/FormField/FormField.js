@@ -18,7 +18,9 @@ const renderFormField = ({
   showPassword,
   labelText,
   styles,
-  inputPhoneVal
+  inputPhoneVal,
+  defaultCountry,
+  errorMessage
 }) => {
   switch (element) {
     case "input":
@@ -46,7 +48,6 @@ const renderFormField = ({
               </button>
             </div>
           </div>
-          {renderInvalidFeedback("Please enter a valid " + name)}
         </>
       ) : (
         <>
@@ -60,7 +61,7 @@ const renderFormField = ({
             }
             style={{ ...styles }}
           />
-          {renderInvalidFeedback("Please enter a valid " + name)}
+          {renderInvalidFeedback(errorMessage)}
         </>
       );
 
@@ -76,11 +77,11 @@ const renderFormField = ({
           >
             {renderSelectOptions(options, placeholder,id)}
           </select>
-          {renderInvalidFeedback("Please select a valid " + name)}
         </>
       );
 
     case "intlPhoneInput":
+      let initVal = inputPhoneVal;
       return (
         <>
           <IntlTelInput
@@ -90,22 +91,23 @@ const renderFormField = ({
               !valid && touched ? "form-control is-invalid" : "form-control"
             }
             autoPlaceholder={true}
-            defaultCountry="ch"
+            defaultCountry={defaultCountry}
             onPhoneNumberChange={(isValid, value, countryData) => {
-              handleChange({},"intlPhoneInput", {
-                value: value,
-                countryData: countryData
-              });
+                if(value!==initVal){
+                  handleChange({},"intlPhoneInput", {
+                    value: value,
+                    countryData: countryData
+                  });
+                }
             }}
             onSelectFlag = {(value,countryData) => {
-              console.log()
               handleChange({},"intlPhoneInput", {
                 value: value,
                 countryData: countryData
               });
             }}
           />
-          {renderInvalidFeedback("Please enter a valid " + name + " number")}
+          {touched && !valid ? <div className="small text-danger">{errorMessage}</div>:""}
         </>
       );
 
@@ -137,8 +139,7 @@ const renderFormField = ({
 };
 
 const renderInvalidFeedback = msg => {
-  // return <div className="invalid-feedback">{msg}</div>;
-  return null;
+  return <div className="invalid-feedback">{msg}</div>;
 };
 
 const renderSelectOptions = (options, placeholder, id) => {
@@ -155,6 +156,7 @@ const renderSelectOptions = (options, placeholder, id) => {
   ];
   return optionsToRender;
 };
+
 
 const FormField = props => {
   return <>{renderFormField(props)}</>;

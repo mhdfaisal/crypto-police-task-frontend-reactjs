@@ -14,7 +14,7 @@ const UserProfileCard = ({
       <div className={styles.profileAvatarContainer}>
         <div className={`${styles.profileCardAvatar}`}>
           <img
-            src="http://www.mohdfaisal.com/assets/images/faisal-profile-photo.png"
+            src={avatar}
             alt="avatar"
           />
         </div>

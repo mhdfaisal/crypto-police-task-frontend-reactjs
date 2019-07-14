@@ -19,7 +19,7 @@ const RegisterForm = ({
   agreement,
   handleChange,
   handleShowPasswordClick,
-  handleRegisterClick
+  handleRegisterClick,
 }) => {
   return (
     <div className="container my-5">
@@ -82,17 +82,3 @@ const RegisterForm = ({
 };
 
 export default RegisterForm;
-
-{
-  /* <FormField {...email} handleChange={handleChange} id="email" />
-<FormField {...phone} handleChange={handleChange} id="intlPhoneInput" />
-<FormField {...category} handleChange={handleChange} id="category" />
-<FormField
-  {...password}
-  handleChange={handleChange}
-  id="password"
-  handleShowPasswordClick={handleShowPasswordClick}
-/>
-<FormField {...agreement} handleChange={handleChange} id="agreement" />
-<CustomBtn title="Register"/> */
-}

@@ -8,6 +8,8 @@ const validate = (value, rules)=>{
             break;
             case "isPhoneNumber": isValid = isValid && isPhoneNumber(value);
             break;
+            case "isDomain" : isValid = isValid && isDomain(value);
+            break;
             default : isValid = true
         }
     }
@@ -25,6 +27,10 @@ const isEmail = (value)=>{
 const isPhoneNumber = (value) => {
    return /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value)
 
+}
+
+const isDomain = (value)=>{
+    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.test(value)
 }
 
 export default validate;

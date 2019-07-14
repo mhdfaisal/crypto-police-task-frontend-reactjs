@@ -10,6 +10,7 @@ import UserProfileForm from "../UserProfileForm/UserProfileForm";
 import validate from "../../utility/validate";
 import countrieslist from "../../utility/countrieslist.json";
 import localforage from "localforage";
+import axios from "axios";
 
 class MainFormContainer extends React.Component {
   state = {
@@ -32,7 +33,8 @@ class MainFormContainer extends React.Component {
         type: "email",
         element: "input",
         placeholder: "Enter your email",
-        name: "email"
+        name: "email",
+        errorMessage:""
       },
       intlPhoneInput: {
         value: "",
@@ -45,7 +47,9 @@ class MainFormContainer extends React.Component {
         placeholder: "",
         touched: false,
         element: "intlPhoneInput",
-        name: "phone"
+        name: "phone",
+        defaultCountry: "ch",
+        errorMessage:""
       },
       category: {
         element: "select",
@@ -61,7 +65,8 @@ class MainFormContainer extends React.Component {
         valid: false,
         name: "category",
         touched: false,
-        placeholder: "Select your category"
+        placeholder: "Select your category",
+        errorMessage:""
       },
       password: {
         element: "input",
@@ -74,7 +79,8 @@ class MainFormContainer extends React.Component {
         },
         name: "password",
         placeholder: "Enter your password",
-        touched: false
+        touched: false,
+        errorMessage:""
       },
       agreement: {
         element: "checkbox",
@@ -87,7 +93,8 @@ class MainFormContainer extends React.Component {
         },
         touched: false,
         name: "agreement",
-        labelText: "Agree with terms and conditions"
+        labelText: "Agree with terms and conditions",
+        errorMessage:""
       },
       securityCode: {
         element: "input",
@@ -99,7 +106,8 @@ class MainFormContainer extends React.Component {
         valid: false,
         touched: false,
         name: "code",
-        placeholder: "Enter security code"
+        placeholder: "Enter security code",
+        errorMessage:""
       },
       name: {
         element: "input",
@@ -111,7 +119,8 @@ class MainFormContainer extends React.Component {
         },
         touched: false,
         placeholder: "Enter your name",
-        name: "name"
+        name: "name",
+        errorMessage:""
       },
       website: {
         element: "input",
@@ -119,11 +128,13 @@ class MainFormContainer extends React.Component {
         value: "",
         valid: false,
         validationRules: {
-          required: true
+          required: true,
+          isDomain:true
         },
         touched: false,
         placeholder: "https://www.yourdomain.com",
-        name: "website"
+        name: "website",
+        errorMessage:""
       },
       country: {
         element: "select",
@@ -135,17 +146,32 @@ class MainFormContainer extends React.Component {
         validationRules: {
           required: true
         },
-        touched: false
+        touched: false,
+        errorMessage:""
       },
       avatar: {
         value: "",
-        valid: true
+        valid: false,
+        validationRules: {
+          required: true
+        },
+        touched: false,
+        errorMessage:""
       }
     }
   };
 
   componentDidMount() {
-    this.rehydrateState();
+    localforage
+      .setDriver([
+        localforage.INDEXEDDB,
+        localforage.WEBSQL,
+        localforage.LOCALSTORAGE
+      ])
+      .then(() => {
+        this.rehydrateState();
+      });
+
     // localforage.clear();
   }
 
@@ -163,7 +189,8 @@ class MainFormContainer extends React.Component {
             [key]: {
               ...newFormData[key],
               inputPhoneVal: value[1],
-              value:value[0],
+              value: value[0],
+              defaultCountry: value[2],
               touched: true,
               valid: validate(value[1], newFormData[key].validationRules)
             }
@@ -184,6 +211,16 @@ class MainFormContainer extends React.Component {
         this.setState({ activeStep: activeStep, formData: { ...newFormData } });
       });
   };
+
+  mapServerSubmissionErrs = (errorsArray)=>{
+    let {formData} = this.state;
+    for(let item in errorsArray){
+      let key = item!=="mobile"? item : "intlPhoneInput"
+      formData = {...formData, [key]:{...formData[key], errorMessage:errorsArray[item][0], touched:true, valid:false}}
+    }
+
+    this.setState({formData, activeStep:1})
+  }
 
   setErrors = submittedData => {
     let valid = true;
@@ -284,20 +321,84 @@ class MainFormContainer extends React.Component {
     );
   };
 
+  goToStep = (step) => {
+    this.setState(
+      prevState => {
+        return {
+          ...prevState,
+          activeStep: step
+        };
+      },
+      () => {
+        this.setActiveStepInStorage(this.state.activeStep);
+      }
+    );
+  };
+
   setActiveStepInStorage = activeStep => {
     localforage.setItem("activeStep", activeStep);
   };
 
   handleFooterBtnClick = formType => {
+    const { activeStep } = this.state;
     if (this.validFormSubmission(formType)) {
-      //make a network request and then on successful completion move to next step
-      this.goToNextStep();
+      if (activeStep === 3) {
+        let data = this.handleDataToSubmit();
+        axios
+          .post(
+            "http://127.0.0.1:8000/api/user",
+            {
+              ...data
+            },
+            {
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json"
+              }
+            }
+          )
+          .then(res => {
+            localforage.removeItem('password',()=>{
+              localforage.removeItem('securityCode')
+            })
+            this.goToNextStep();
+          })
+          .catch(err => {
+            console.log(err.response.data.message);
+            this.mapServerSubmissionErrs(err.response.data.message);
+          });
+      } else {
+        this.goToNextStep();
+      }
     }
   };
 
-  updateStateAfterChange = (e, id, phoneNumber = null) => {
+  handleDataToSubmit = () => {
+    const { formData } = this.state;
+    let dataToSubmit = {};
+    for (let control in formData) {
+      if (control === "intlPhoneInput") {
+        dataToSubmit = { ...dataToSubmit, mobile: formData[control].value };
+      } else {
+        dataToSubmit = {
+          ...dataToSubmit,
+          [control.toLowerCase()]: formData[control].value
+        };
+      }
+    }
+    delete dataToSubmit.agreement;
+    return dataToSubmit;
+  };
+
+  updateStateAfterChange = (
+    e,
+    id,
+    phoneNumber = null,
+    defaultCountry = null
+  ) => {
     let valueForLocalForage = e.target.value;
     let phoneNumberForLocalForage = phoneNumber;
+    let defaultCountryForLocalForage = defaultCountry;
     this.setState(
       {
         formData: {
@@ -306,6 +407,7 @@ class MainFormContainer extends React.Component {
             ...this.state.formData[id],
             value: phoneNumber ? phoneNumber : e.target.value,
             inputPhoneVal: phoneNumber ? e.target.value : undefined,
+            defaultCountry: defaultCountry ? defaultCountry : undefined,
             touched: true,
             valid: validate(
               e.target.value,
@@ -316,7 +418,11 @@ class MainFormContainer extends React.Component {
       },
       () => {
         if (id === "intlPhoneInput") {
-          localforage.setItem(id, [phoneNumberForLocalForage,valueForLocalForage])
+          localforage.setItem(id, [
+            phoneNumberForLocalForage,
+            valueForLocalForage,
+            defaultCountryForLocalForage
+          ]);
         } else {
           localforage
             .setItem(id, valueForLocalForage)
@@ -329,12 +435,14 @@ class MainFormContainer extends React.Component {
   handleChange = (e, id, phoneObj = {}) => {
     if (id === "intlPhoneInput") {
       let { countryData, value } = phoneObj;
+      let defaultCountry = countryData.iso2;
       let phoneNumber = `+${countryData.dialCode}-${value}`;
       //faking the event object to use the same function
       this.updateStateAfterChange(
         { target: { value: value } },
         id,
-        phoneNumber
+        phoneNumber,
+        defaultCountry
       );
     } else if (id === "agreement") {
       this.setState(prevState => {
@@ -358,6 +466,28 @@ class MainFormContainer extends React.Component {
     } else {
       this.updateStateAfterChange(e, id);
     }
+  };
+
+  handleAvatarChange = avatarURL => {
+    this.setState(
+      {
+        formData: {
+          ...this.state.formData,
+          avatar: {
+            ...this.state.formData.avatar,
+            value: avatarURL,
+            valid: validate(
+              avatarURL,
+              this.state.formData.avatar.validationRules
+            ),
+            touched: true
+          }
+        }
+      },
+      () => {
+        localforage.setItem("avatar", avatarURL).catch(err => console.log(err));
+      }
+    );
   };
 
   handleShowPasswordClick = () => {
@@ -416,8 +546,10 @@ class MainFormContainer extends React.Component {
             website={formData.website}
             handleChange={this.handleChange}
             country={formData.country}
+            avatar={formData.avatar}
             goToPrevStep={this.goToPrevStep}
             handleSaveBtnClick={this.handleFooterBtnClick}
+            handleAvatarChange={this.handleAvatarChange}
           />
         );
       case 4:

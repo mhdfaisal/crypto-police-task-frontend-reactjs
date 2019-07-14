@@ -26,30 +26,66 @@ class ThankYouPage extends React.Component {
     };
   }
 
+  setAnalysisData = data => {
+
+    console.log(data);
+
+    this.setState({
+      userComments:
+      (((data||{}).wot||{}).payload||{}).comments
+          ? [...data.wot.payload.comments]
+          : [],
+      userCommentsToShow:
+      (((data||{}).wot||{}).payload||{}).comments
+          ? [...data.wot.payload.comments.slice(0, 2)]
+          : [],
+      ratings:
+      ((((data||{}).general_analysis||{}).payload||{}).ratings||{}).watchdog
+          ? ((((data||{}).general_analysis||{}).payload||{}).ratings||{}).watchdog
+          : "Nothing Found",
+
+      registrationDate:
+        ((((data||{}).whois||{}).payload||{}).registration||{}).value
+          ? ((((data||{}).whois||{}).payload||{}).registration||{}).value
+          : "Nothing found",
+
+      expirationDate:
+      ((((data||{}).whois||{}).payload||{}).expiration||{}).value
+          ? ((((data||{}).whois||{}).payload||{}).expiration||{}).value
+          : "Nothing found",
+
+      phishtankStatus:
+        ((((data||{}).phishtank||{}).payload||{}).status||{}).value
+          ? ((((data||{}).phishtank||{}).payload||{}).status||{}).value
+          : "Nothing found",
+      etherscamDb:
+           ((((data||{}).etherscam||{}).payload||{}).status||{}).value
+          ? ((((data||{}).etherscam||{}).payload||{}).status||{}).value
+          : "Nothing found",
+
+      trustworthiness:
+        {
+          
+          color: ((((data||{}).wot||{}).payload||{}).trust||{}).color ? ((((data||{}).wot||{}).payload||{}).trust||{}).color : "golden",
+          value: ((((data||{}).wot||{}).payload||{}).trust||{}).value ? ((((data||{}).wot||{}).payload||{}).trust||{}).value : 0,
+        },
+      fetched: true
+    });
+  };
+
   componentDidMount() {
+    //sending two requests since for new domains, server is not repsonding with complete data in the first go
     axios
       .post("https://watchdog-api-v1.cryptopolice.com/api/verify", {
         domain: this.props.website
       })
       .then(res => {
-        const data = res.data.response;
-        this.setState({
-          userComments: [...data.wot.payload.comments],
-          userCommentsToShow: [...data.wot.payload.comments.slice(0, 2)],
-          ratings: data.general_analysis.payload.ratings.watchdog,
-          registrationDate: data.whois.payload.registration.value,
-          expirationDate: data.whois.payload.expiration.value,
-          phishtankStatus: data.phishtank.payload.status.value,
-          etherscamDb: data.etherscam.payload.status.value,
-          trustworthiness: {
-            color: data.wot.payload.trust.color,
-            value: data.wot.payload.trust.value
-          },
-          fetched: true
-        });
+        console.log(res)
+        this.setAnalysisData(res.data.response);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(err =>{
+        this.setState({fetched:true})
+        console.log(err)
       });
   }
 
@@ -158,16 +194,22 @@ class ThankYouPage extends React.Component {
           ...userCommentsToShow,
           ...userComments.slice(
             userCommentsToShowLength,
-            userCommentsLength < 10 ? userCommentsLength: 10
+            userCommentsLength < 10 ? userCommentsLength : 10
           )
         ]
       });
-    } else if(userCommentsToShowLength > 2) {
-        this.setState({
-          userCommentsToShow:[...userCommentsToShow, ...userComments.slice(
-            userCommentsToShowLength, userCommentsLength < userCommentsToShowLength + 10 ? userCommentsLength : userCommentsToShowLength + 10
-          )]
-        })
+    } else if (userCommentsToShowLength > 2) {
+      this.setState({
+        userCommentsToShow: [
+          ...userCommentsToShow,
+          ...userComments.slice(
+            userCommentsToShowLength,
+            userCommentsLength < userCommentsToShowLength + 10
+              ? userCommentsLength
+              : userCommentsToShowLength + 10
+          )
+        ]
+      });
     }
   };
 
