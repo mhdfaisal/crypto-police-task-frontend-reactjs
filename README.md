@@ -1,3 +1,8 @@
+## Crypto Police Test Task -
+Live preview available at: (https://cocky-bohr-d613e2.netlify.com/)
+
+Built using React Js
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
