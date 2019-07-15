@@ -1,3 +1,0 @@
-Countries data from -
-
-https://datahub.io/core/country-list

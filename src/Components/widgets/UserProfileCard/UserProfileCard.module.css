@@ -36,20 +36,20 @@
   height: 100%;
 }
 
-@media only screen and (max-width:991px){
-  .profileContainer{
+@media only screen and (max-width: 991px) {
+  .profileContainer {
     max-width: 100%;
   }
 }
 
-@media only screen and (max-width:767px){
-  .profileContainer{
+@media only screen and (max-width: 767px) {
+  .profileContainer {
     max-width: 100%;
   }
 }
 
-@media only screen and (max-width:620px){
-  .profileContainer{
+@media only screen and (max-width: 620px) {
+  .profileContainer {
     flex-direction: column;
   }
   .profileContainer > div {
@@ -62,7 +62,7 @@
   .profileAvatarContainer {
     flex-direction: column;
   }
-  .profileCardAvatar{
-    margin-bottom:6%;
+  .profileCardAvatar {
+    margin-bottom: 6%;
   }
 }

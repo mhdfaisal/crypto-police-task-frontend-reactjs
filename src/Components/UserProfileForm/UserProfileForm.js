@@ -48,14 +48,14 @@ class UserProfileForm extends React.Component {
     let formData = new FormData();
     formData.append("photo", file);
     axios
-      .post("http://127.0.0.1:8000/api/file", formData)
+      .post("http://fast-ravine-38205.herokuapp.com/api/file", formData)
       .then(res => {
         this.props.handleAvatarChange(res.data.url);
-        this.setState({ uploading: false});
+        this.setState({ uploading: false });
       })
       .catch(err => {
-        this.setState({imageUploadErr:true, uploading:false})
-        console.log(err)
+        this.setState({ imageUploadErr: true, uploading: false });
+        console.log(err);
       });
   };
 
@@ -76,26 +76,33 @@ class UserProfileForm extends React.Component {
   };
 
   renderFileUploader = () => {
-   if(this.props.avatar.value.trim()===""){
-    return (
-      <div className="col-md-8">
-        {!this.state.uploading && !this.state.imageUploadErr ? (
-          <FileUploader onFileSelected={this.handleFileSelection} avatar={this.props.avatar} />
-        ) : this.state.imageUploadErr && !this.state.uploading ? (
-          <p className="small text-danger">Sorry, some error occured while uploading the image, please refresh the page and try again</p>
-        ) : (
-          this.renderSpinner()
-        )}
-      </div>
-    );
-   }
-   else{
-     return(
-       <div className="col-md-8">
-         <p className="small text-success my-1 mb-0">Avatar was uploaded successfuly !</p>
-       </div>
-     )
-   }
+    if (this.props.avatar.value.trim() === "") {
+      return (
+        <div className="col-md-8">
+          {!this.state.uploading && !this.state.imageUploadErr ? (
+            <FileUploader
+              onFileSelected={this.handleFileSelection}
+              avatar={this.props.avatar}
+            />
+          ) : this.state.imageUploadErr && !this.state.uploading ? (
+            <p className="small text-danger">
+              Sorry, some error occured while uploading the image, please
+              refresh the page and try again
+            </p>
+          ) : (
+            this.renderSpinner()
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="col-md-8">
+          <p className="small text-success my-1 mb-0">
+            Avatar was uploaded successfuly !
+          </p>
+        </div>
+      );
+    }
   };
 
   render() {

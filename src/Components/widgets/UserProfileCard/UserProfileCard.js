@@ -13,10 +13,7 @@ const UserProfileCard = ({
     <div className={`${styles.profileContainer}`}>
       <div className={styles.profileAvatarContainer}>
         <div className={`${styles.profileCardAvatar}`}>
-          <img
-            src={avatar}
-            alt="avatar"
-          />
+          <img src={avatar} alt="avatar" />
         </div>
         <div>
           <p>{name}</p>

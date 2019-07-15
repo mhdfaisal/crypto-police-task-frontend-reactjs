@@ -19,7 +19,7 @@ const RegisterForm = ({
   agreement,
   handleChange,
   handleShowPasswordClick,
-  handleRegisterClick,
+  handleRegisterClick
 }) => {
   return (
     <div className="container my-5">
@@ -74,7 +74,13 @@ const RegisterForm = ({
       <div className="row form-group">
         {renderLabel("")}
         <div className="col-md-8">
-          <CustomBtn title="Register" disabled={!agreement.isChecked} handleClick={()=>{handleRegisterClick("register")}} />
+          <CustomBtn
+            title="Register"
+            disabled={!agreement.isChecked}
+            handleClick={() => {
+              handleRegisterClick("register");
+            }}
+          />
         </div>
       </div>
     </div>

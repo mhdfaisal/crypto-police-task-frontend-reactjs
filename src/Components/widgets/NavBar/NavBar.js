@@ -11,10 +11,8 @@ const NavBar = props => {
         <ul className={styles.navBarLinkList}>
           <li className={styles.navBarLinkListItem}>
             <a href="/" alt="homepage">
-            <span>
-                <i
-                  className="fa fa-home mr-2"
-                />
+              <span>
+                <i className="fa fa-home mr-2" />
               </span>
               <span>Home</span>
             </a>
@@ -22,9 +20,7 @@ const NavBar = props => {
           <li className={styles.navBarLinkListItem}>
             <a href="/">
               <span>
-                <i
-                  className="fa fa-linkedin-square mr-2"
-                />
+                <i className="fa fa-linkedin-square mr-2" />
               </span>
               <span>LinkedIn</span>
             </a>
@@ -32,9 +28,7 @@ const NavBar = props => {
           <li className={styles.navBarLinkListItem}>
             <a href="/">
               <span>
-                <i
-                  className="fa fa-github-square mr-2"
-                />
+                <i className="fa fa-github-square mr-2" />
               </span>
               <span>GitHub</span>
             </a>

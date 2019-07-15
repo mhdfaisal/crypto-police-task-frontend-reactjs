@@ -34,7 +34,7 @@ class MainFormContainer extends React.Component {
         element: "input",
         placeholder: "Enter your email",
         name: "email",
-        errorMessage:""
+        errorMessage: ""
       },
       intlPhoneInput: {
         value: "",
@@ -49,7 +49,7 @@ class MainFormContainer extends React.Component {
         element: "intlPhoneInput",
         name: "phone",
         defaultCountry: "ch",
-        errorMessage:""
+        errorMessage: ""
       },
       category: {
         element: "select",
@@ -66,7 +66,7 @@ class MainFormContainer extends React.Component {
         name: "category",
         touched: false,
         placeholder: "Select your category",
-        errorMessage:""
+        errorMessage: ""
       },
       password: {
         element: "input",
@@ -80,7 +80,7 @@ class MainFormContainer extends React.Component {
         name: "password",
         placeholder: "Enter your password",
         touched: false,
-        errorMessage:""
+        errorMessage: ""
       },
       agreement: {
         element: "checkbox",
@@ -94,7 +94,7 @@ class MainFormContainer extends React.Component {
         touched: false,
         name: "agreement",
         labelText: "Agree with terms and conditions",
-        errorMessage:""
+        errorMessage: ""
       },
       securityCode: {
         element: "input",
@@ -107,7 +107,7 @@ class MainFormContainer extends React.Component {
         touched: false,
         name: "code",
         placeholder: "Enter security code",
-        errorMessage:""
+        errorMessage: ""
       },
       name: {
         element: "input",
@@ -120,7 +120,7 @@ class MainFormContainer extends React.Component {
         touched: false,
         placeholder: "Enter your name",
         name: "name",
-        errorMessage:""
+        errorMessage: ""
       },
       website: {
         element: "input",
@@ -129,12 +129,12 @@ class MainFormContainer extends React.Component {
         valid: false,
         validationRules: {
           required: true,
-          isDomain:true
+          isDomain: true
         },
         touched: false,
         placeholder: "https://www.yourdomain.com",
         name: "website",
-        errorMessage:""
+        errorMessage: ""
       },
       country: {
         element: "select",
@@ -147,7 +147,7 @@ class MainFormContainer extends React.Component {
           required: true
         },
         touched: false,
-        errorMessage:""
+        errorMessage: ""
       },
       avatar: {
         value: "",
@@ -156,7 +156,7 @@ class MainFormContainer extends React.Component {
           required: true
         },
         touched: false,
-        errorMessage:""
+        errorMessage: ""
       }
     }
   };
@@ -172,7 +172,6 @@ class MainFormContainer extends React.Component {
         this.rehydrateState();
       });
 
-    // localforage.clear();
   }
 
   rehydrateState = () => {
@@ -212,15 +211,23 @@ class MainFormContainer extends React.Component {
       });
   };
 
-  mapServerSubmissionErrs = (errorsArray)=>{
-    let {formData} = this.state;
-    for(let item in errorsArray){
-      let key = item!=="mobile"? item : "intlPhoneInput"
-      formData = {...formData, [key]:{...formData[key], errorMessage:errorsArray[item][0], touched:true, valid:false}}
+  mapServerSubmissionErrs = errorsArray => {
+    let { formData } = this.state;
+    for (let item in errorsArray) {
+      let key = item !== "mobile" ? item : "intlPhoneInput";
+      formData = {
+        ...formData,
+        [key]: {
+          ...formData[key],
+          errorMessage: errorsArray[item][0],
+          touched: true,
+          valid: false
+        }
+      };
     }
 
-    this.setState({formData, activeStep:1})
-  }
+    this.setState({ formData, activeStep: 1 });
+  };
 
   setErrors = submittedData => {
     let valid = true;
@@ -321,7 +328,7 @@ class MainFormContainer extends React.Component {
     );
   };
 
-  goToStep = (step) => {
+  goToStep = step => {
     this.setState(
       prevState => {
         return {
@@ -346,7 +353,7 @@ class MainFormContainer extends React.Component {
         let data = this.handleDataToSubmit();
         axios
           .post(
-            "http://127.0.0.1:8000/api/user",
+            "http://fast-ravine-38205.herokuapp.com/api/user",
             {
               ...data
             },
@@ -358,9 +365,9 @@ class MainFormContainer extends React.Component {
             }
           )
           .then(res => {
-            localforage.removeItem('password',()=>{
-              localforage.removeItem('securityCode')
-            })
+            localforage.removeItem("password", () => {
+              localforage.removeItem("securityCode");
+            });
             this.goToNextStep();
           })
           .catch(err => {

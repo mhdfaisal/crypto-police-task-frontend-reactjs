@@ -23,8 +23,8 @@ class AvatarPreview extends React.Component {
           </div>
         </div>
         <div className="col-xs-4 align-self-center">
-            <button className="btn btn-success btn-sm mx-2">Upload</button>
-            <button className="btn btn-danger btn-sm">Change</button>
+          <button className="btn btn-success btn-sm mx-2">Upload</button>
+          <button className="btn btn-danger btn-sm">Change</button>
         </div>
       </div>
     );

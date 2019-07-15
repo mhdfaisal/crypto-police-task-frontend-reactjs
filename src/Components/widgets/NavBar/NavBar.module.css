@@ -34,7 +34,7 @@
   align-items: flex-end;
   justify-content: flex-start;
   align-self: flex-end;
-  padding:1% 0 0.5% 0;
+  padding: 1% 0 0.5% 0;
 }
 
 .navBarLinkListItem {
@@ -68,14 +68,14 @@
 }
 
 /*---- Media queries ------*/
-@media only screen and (max-width:1104px){
-  .navBarLinkListItem{
-    flex-basis:35%;
+@media only screen and (max-width: 1104px) {
+  .navBarLinkListItem {
+    flex-basis: 35%;
   }
 }
 
-@media only screen and (max-width:850px){
-  .navBarLinkListItem{
+@media only screen and (max-width: 850px) {
+  .navBarLinkListItem {
     flex-basis: 33.5%;
   }
   .navBarLinkListItem i {
@@ -89,18 +89,18 @@
     flex-direction: column;
   }
 
-  .navBarLinkList{
+  .navBarLinkList {
     align-self: stretch;
   }
 
-  .navBarLinkListItem{
+  .navBarLinkListItem {
     flex-basis: 50%;
-    margin:3% 0 2% 0;
+    margin: 3% 0 2% 0;
   }
 }
 
-@media only screen and (max-width:320px){
-  .navBarLinkListItem i{
+@media only screen and (max-width: 320px) {
+  .navBarLinkListItem i {
     display: none;
   }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import StarRatings from "react-star-ratings";
 
-const RatingIndicator = (props) => {
+const RatingIndicator = props => {
   return (
     <div>
-      <StarRatings {...props}/>
+      <StarRatings {...props} />
     </div>
   );
 };
