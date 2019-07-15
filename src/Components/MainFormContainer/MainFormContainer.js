@@ -171,7 +171,6 @@ class MainFormContainer extends React.Component {
       .then(() => {
         this.rehydrateState();
       });
-
   }
 
   rehydrateState = () => {
@@ -353,7 +352,7 @@ class MainFormContainer extends React.Component {
         let data = this.handleDataToSubmit();
         axios
           .post(
-            "http://fast-ravine-38205.herokuapp.com/api/user",
+            "https://fast-ravine-38205.herokuapp.com/api/user",
             {
               ...data
             },

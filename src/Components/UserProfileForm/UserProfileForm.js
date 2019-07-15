@@ -48,7 +48,7 @@ class UserProfileForm extends React.Component {
     let formData = new FormData();
     formData.append("photo", file);
     axios
-      .post("http://fast-ravine-38205.herokuapp.com/api/file", formData)
+      .post("https://fast-ravine-38205.herokuapp.com/api/file", formData)
       .then(res => {
         this.props.handleAvatarChange(res.data.url);
         this.setState({ uploading: false });
